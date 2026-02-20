@@ -1,6 +1,6 @@
 # TEKNOFEST Roket Yarışması Yer İstasyonu Dashboard
 
-Bu proje, bir model roket veya görev yükü için **TEKNOFEST 2025** roket yarışması standartlarına uygun olarak tasarlanmış olan **Çift Port Arayüzlü (Dual Port Interface) Yer İstasyonu (Ground Station)** yazılımıdır.
+Bu proje, roket ve görev yükü için **TEKNOFEST 2025** roket yarışması standartlarına uygun olarak tasarlanmış olan **Çift Port Arayüzlü (Dual Port Interface) Yer İstasyonu (Ground Station)** yazılımıdır.
 
 Sistem iki ana bileşenden oluşmaktadır:
 1. **Veri Toplayıcı ve İletici Sunucu (Python Backend)**
