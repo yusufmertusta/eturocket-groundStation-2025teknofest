@@ -13,7 +13,7 @@ Sistem iki ana bileşenden oluşmaktadır:
 - **Sensör Verilerini İzleme:** Roketten gelen irtifa, paraşüt durumu (P1, P2), jiroskop (X, Y, Z), ivme (X, Y, Z), açı (pitch) ve GPS konum verilerini gerçek zamanlı takip eder.
 - **Görev Yükü (Payload) İzleme:** Görev yüküne ait özel GPS ve sıvı seviye verilerini işler, roket GPS'i ile karşılaştırmalar yapar.
 - **Canlı Harita (Google Maps):** GPS koordinatlarını anlık olarak harita üzerinde görselleştirir.
-- **HYİ (Hakem Yer İstasyonu) Haberleşmesi:** TEKNOFEST yarışma kurallarına uygun formatta (`0xFF 0xFF 0x54 0x52` header vb. içeren 78 bytelık paket yapısı) hakem masasına otomatik veya manuel paket gönderimi yapar.
+- **HYİ (Hakem Yer İstasyonu) Haberleşmesi:** TEKNOFEST yarışma kurallarına uygun formatta (`0xFF 0xFF 0x54 0x52` header vb. içeren 78 bytelık paket yapısı) hakem masasına otomatik ve manuel paket gönderimi yapar.
 - **Log ve Dışarı Aktarma:** Gelen ham verileri, hata ayıklama bilgilerini kaydeder ve geçmiş telemetri verilerini `.json` formatında dışarı aktarmaya olanak sağlar.
 - **Çoklu Seri Port Desteği (COM):** Roket (LoRa modülü), Payload GPS ve HYİ haberleşmesi için 3 farklı fiziksel seri porta aynı anda bağlanabilir.
 
@@ -57,10 +57,19 @@ python main_system.py
 *(Sunucu http://localhost:8000 adresinde ayağa kalkacaktır).*
 
 #### 2. Frontend (React Dashboard)
-Bağımlılıkları yükleyin ve başlatın:
+Bağımlılıkları yükleyin:
 ```bash
 # Proje kök dizinine geri dönün
 npm install
+```
+
+**Google Haritalar API Ayarı:**
+Harita üzerinden konum takibi yapabilmek için Google Maps API anahtarına ihtiyacınız vardır:
+1. Proje kök dizininde bulunan `.env.example` dosyasının adını (veya kopyasını oluşturarak adını) `.env` yapın. Eğer Node versiyonunuz yüzünden az önce oluşturulmuş `.env` dosyanız varsa o dosyanın içerisine ekleme yapın.
+2. İçerisindeki `REACT_APP_GOOGLE_MAPS_API_KEY` değerine kendi API anahtarınızı yapıştırın. (Bu dosya Github'a gönderilmez)
+
+React uygulamasını başlatmak için:
+```bash
 npm start
 ```
 *(Dashboard http://localhost:3000 adresinden erişilebilir olacaktır).*
