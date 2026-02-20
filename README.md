@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# TEKNOFEST Roket Yarışması Yer İstasyonu Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bu proje, bir model roket veya görev yükü için **TEKNOFEST 2025** roket yarışması standartlarına uygun olarak tasarlanmış olan **Çift Port Arayüzlü (Dual Port Interface) Yer İstasyonu (Ground Station)** yazılımıdır.
 
-## Available Scripts
+Sistem iki ana bileşenden oluşmaktadır:
+1. **Veri Toplayıcı ve İletici Sunucu (Python Backend)**
+2. **Kullanıcı Arayüzü / Dashboard (React Frontend)**
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Projenin Amacı ve Özellikleri
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Sensör Verilerini İzleme:** Roketten gelen irtifa, paraşüt durumu (P1, P2), jiroskop (X, Y, Z), ivme (X, Y, Z), açı (pitch) ve GPS konum verilerini gerçek zamanlı takip eder.
+- **Görev Yükü (Payload) İzleme:** Görev yüküne ait özel GPS ve sıvı seviye verilerini işler, roket GPS'i ile karşılaştırmalar yapar.
+- **Canlı Harita (Google Maps):** GPS koordinatlarını anlık olarak harita üzerinde görselleştirir.
+- **HYİ (Hakem Yer İstasyonu) Haberleşmesi:** TEKNOFEST yarışma kurallarına uygun formatta (`0xFF 0xFF 0x54 0x52` header vb. içeren 78 bytelık paket yapısı) hakem masasına otomatik veya manuel paket gönderimi yapar.
+- **Log ve Dışarı Aktarma:** Gelen ham verileri, hata ayıklama bilgilerini kaydeder ve geçmiş telemetri verilerini `.json` formatında dışarı aktarmaya olanak sağlar.
+- **Çoklu Seri Port Desteği (COM):** Roket (LoRa modülü), Payload GPS ve HYİ haberleşmesi için 3 farklı fiziksel seri porta aynı anda bağlanabilir.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠️ Kullanılan Teknolojiler
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Backend:** Python (Flask, PySerial, struct, re)
+- **Frontend:** React (Tailwind CSS, Lucide React, Three.js, Google Maps API)
+- **Haberleşme Formatı:** UART Seri Haberleşme & HTTP/REST API
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Kurulum ve Çalıştırma
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Projeyi çalıştırmak için sisteminizde Node.js (v18+) ve Python (3.8+) kurulu olduğundan emin olun.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Kolay Başlatma (Windows)
+Proje kök dizinindeki başlatıcı dosyasına çift tıklayarak sistemi hızlıca ayağa kaldırabilirsiniz:
 
-### `npm run eject`
+```bash
+# Proje ana dizininde:
+start_project.bat
+```
+*(Bu dosya otomatik olarak hem Python sunucusunu hem de React uygulamasını ayrı pencerelerde başlatacaktır).*
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Manuel Başlatma
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### 1. Backend (Python Sunucusu)
+Öncelikle gerekli kütüphanelerin kurulu olduğundan emin olun:
+```bash
+pip install flask flask-cors pyserial pyfiglet
+```
+Sunucuyu başlatmak için:
+```bash
+cd backend
+python main_system.py
+```
+*(Sunucu http://localhost:8000 adresinde ayağa kalkacaktır).*
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### 2. Frontend (React Dashboard)
+Bağımlılıkları yükleyin ve başlatın:
+```bash
+# Proje kök dizinine geri dönün
+npm install
+npm start
+```
+*(Dashboard http://localhost:3000 adresinden erişilebilir olacaktır).*
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔌 Sistemin Kullanımı
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Dashboard ekranında **Portları Yenile** butonuna tıklayarak bilgisayarınıza bağlı cihazların (LoRa, Sensör vb.) görünmesini sağlayın.
+2. Ayarlar kısmından:
+   - **LoRa Port:** Ana roket verisini alacağınız port.
+   - **Payload GPS Port:** Görev yükünden veri alacağınız port.
+   - **HYİ Port:** Hakem masasına veri iletmek için atanacak port.
+3. Kontrol panelinden **Bağlan** tuşuna basarak portları dinlemeye başlayabilirsiniz.
+4. Alt kısımdaki telemetri bölümünde ve bağlantı durumu kartlarında gelen veriler anlık görünmeye ve kaydedilmeye başlayacaktır.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+> **Not:** Projede IPv6/IPv4 çözünürlük farklarından kaynaklı "react-scripts start" takılmalarını önlemek amacıyla kök dizinde `.env` (PORT=3000, HOST=127.0.0.1) kullanılmaktadır.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
