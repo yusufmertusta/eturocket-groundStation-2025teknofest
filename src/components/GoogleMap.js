@@ -281,7 +281,7 @@ const GoogleMap = ({
         </div>
       </div>
       
-      <div className="h-96 border border-gray-300 rounded-lg overflow-hidden">
+      <div className="h-56 sm:h-96 border border-gray-300 rounded-lg overflow-hidden">
         <Wrapper apiKey={apiKey} render={render}>
           <MapComponent
             rocketLat={rocketLat}

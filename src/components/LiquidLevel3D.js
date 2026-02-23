@@ -16,13 +16,16 @@ const LiquidLevel3D = ({ liquidData }) => {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff); // Beyaz arkaplan
     // Camera setup - daha iyi görünüm için ayarlandı
-    const camera = new THREE.PerspectiveCamera(40, 1005 / 602, 0.1, 1000);
+    const initWidth = mountRef.current.clientWidth || 800;
+    const initHeight = mountRef.current.clientHeight || Math.round(initWidth * 0.6);
+    const camera = new THREE.PerspectiveCamera(40, initWidth / initHeight, 0.1, 1000);
     camera.position.set(0, 3, 8);
     camera.lookAt(0, 0, 0);
     
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(1005, 602);
+    renderer.setSize(initWidth, initHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled = false; // Gölgeleri kapat
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
@@ -204,6 +207,27 @@ const LiquidLevel3D = ({ liquidData }) => {
     renderer.domElement.addEventListener('mousedown', onMouseDown);
     renderer.domElement.addEventListener('mouseup', onMouseUp);
     renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+    // Touch support for mobile/tablet
+    const onTouchStart = (e) => { e.preventDefault(); onMouseDown(e.touches[0]); };
+    const onTouchEnd = () => { onMouseUp(); };
+    const onTouchMove = (e) => { e.preventDefault(); onMouseMove(e.touches[0]); };
+    renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
+    renderer.domElement.addEventListener('touchend', onTouchEnd);
+    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
+
+    // Responsive resize handler
+    const handleResize = () => {
+      if (!mountRef.current) return;
+      const w = mountRef.current.clientWidth;
+      const h = mountRef.current.clientHeight;
+      if (w === 0 || h === 0) return;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(mountRef.current);
     
     // Animation loop
     const animate = () => {
@@ -225,12 +249,16 @@ const LiquidLevel3D = ({ liquidData }) => {
     
     // Cleanup
     return () => {
+      resizeObserver.disconnect();
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
+      renderer.domElement.removeEventListener('touchstart', onTouchStart);
+      renderer.domElement.removeEventListener('touchend', onTouchEnd);
+      renderer.domElement.removeEventListener('touchmove', onTouchMove);
       renderer.dispose();
     };
   }, []);
@@ -294,13 +322,13 @@ const LiquidLevel3D = ({ liquidData }) => {
         </p>
       </div>
       
-      <div ref={mountRef} className="w-full h-full border border-gray-300 rounded-lg" />
+      <div ref={mountRef} className="w-full h-[280px] sm:h-[400px] lg:h-[540px] border border-gray-300 rounded-lg" />
       
       {/* Sensör değerleri tablosu */}
       {liquidData && (
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
           <h4 className="text-sm font-medium text-gray-900 mb-2">Sensör Değerleri (8-bit)</h4>
-          <div className="grid grid-cols-8 gap-2 text-xs">
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 text-xs">
             {rodsRef.current && rodsRef.current.map((rodData, index) => {
               const sensorNumber = rodData.sensorNumber;
               const level = parseLiquidData(liquidData)[sensorNumber - 1] || 0;

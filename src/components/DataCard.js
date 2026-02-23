@@ -42,18 +42,18 @@ const DataCard = ({ title, value, unit = '', type = 'number', icon: Icon, status
   };
 
   return (
-    <div className={`p-6 ${getStatusClasses()}`}>
+    <div className={`p-3 sm:p-6 ${getStatusClasses()}`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-medium opacity-80">{title}</span>
-        {Icon && <Icon size={18} className="opacity-60" />}
+        <span className="text-xs sm:text-sm font-medium opacity-80">{title}</span>
+        {Icon && <Icon size={16} className="opacity-60 flex-shrink-0" />}
       </div>
       
       <div className="flex items-baseline space-x-1">
-        <span className="text-3xl font-bold">
+        <span className="text-xl sm:text-3xl font-bold break-all">
           {formatValue()}
         </span>
         {unit && (
-          <span className="text-lg opacity-60 font-medium">
+          <span className="text-base sm:text-lg opacity-60 font-medium">
             {unit}
           </span>
         )}

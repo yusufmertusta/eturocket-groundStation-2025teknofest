@@ -284,16 +284,16 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-3">
               <Activity className="h-8 w-8 text-blue-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">TOBB ETU TEKNOFEST GROUND STATION</h1>
-                <p className="text-sm text-gray-600">Dual Port Interface Dashboard v2.1</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">TOBB ETU TEKNOFEST GROUND STATION</h1>
+                <p className="text-xs sm:text-sm text-gray-600">Dual Port Interface Dashboard v2.1</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <button
                 onClick={loadAvailablePorts}
                 className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900"
@@ -318,12 +318,12 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 py-6 space-y-6">
         {/* Connection Status */}
         {isConnected && (
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-3">Bağlantı Durumu</h3>
-                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <div className={`flex items-center space-x-2 p-3 rounded-lg ${connectionStatus.lora ? 'bg-green-50' : 'bg-gray-50'}`}>
                 <Activity className={`h-4 w-4 ${connectionStatus.lora ? 'text-green-600' : 'text-gray-600'}`} />
                 <span className={`text-sm font-medium ${connectionStatus.lora ? 'text-green-600' : 'text-gray-600'}`}>
@@ -348,13 +348,13 @@ const Dashboard = () => {
         )}
 
         {/* Configuration Panel */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center space-x-2 mb-4">
             <Settings className="h-5 w-5 text-gray-600" />
             <h2 className="text-lg font-semibold text-gray-900">Sistem Ayarları</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Takım ID
@@ -461,7 +461,7 @@ const Dashboard = () => {
           </div>
 
           {/* Control Panel */}
-          <div className="flex items-center space-x-4 pt-4 border-t">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-4 border-t">
             <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -496,10 +496,10 @@ const Dashboard = () => {
         </div>
 
         {/* Telemetry Display */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Telemetri Verileri</h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {/* Roket Verileri */}
             <div className="bg-blue-50 p-4 rounded-lg">
               <p className="text-sm text-gray-600">İrtifa</p>
@@ -646,7 +646,7 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Payload Son Güncelleme</p>y
+              <p className="text-sm text-gray-600">Payload Son Güncelleme</p>
               <p className="text-lg font-bold text-gray-600">
                 {telemetryData.payload_last_update || 'N/A'}
               </p>
@@ -672,10 +672,10 @@ const Dashboard = () => {
 
         {/* GPS Data Comparison */}
         {telemetryData.gps_valid && (telemetryData.payload_latitude !== 0 || telemetryData.payload_longitude !== 0 || telemetryData.payload_gps_altitude !== 0) && (
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">GPS Veri Karşılaştırması</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <div className="bg-blue-50 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-blue-800 mb-2">Roket GPS</h3>
                 <div className="space-y-1 text-sm">
@@ -707,7 +707,7 @@ const Dashboard = () => {
         )}
 
         {/* Google Maps Harita */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">GPS Konum Haritası</h2>
           <GoogleMap
             rocketLat={telemetryData.gps_latitude}
@@ -722,10 +722,10 @@ const Dashboard = () => {
         </div>
 
         {/* Paraşüt Durum Özeti */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Paraşüt Durum Özeti</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-blue-50 p-4 rounded-lg text-center">
               <h3 className="text-sm font-medium text-blue-800 mb-2">HYİ Durum Değeri</h3>
               <div className="text-3xl font-bold text-blue-600">
@@ -773,10 +773,10 @@ const Dashboard = () => {
         </div>
 
         {/* Data Source Status */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Veri Kaynak Durumu</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
             <div className="border rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-3">
                 <Activity className="h-5 w-5 text-blue-600" />
@@ -822,7 +822,7 @@ const Dashboard = () => {
         {/* 3D Modeller */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Roket 3D Modeli */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Roket 3D Modeli</h2>
             <div className="mb-4 p-3 bg-blue-50 rounded-lg">
               <h3 className="text-sm font-medium text-blue-800 mb-2">Kalibrasyon Bilgileri</h3>
@@ -842,7 +842,7 @@ const Dashboard = () => {
           </div>
 
           {/* Payload 3D Modeli */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Payload 3D Modeli</h2>
             <div className="mb-4 p-3 bg-cyan-50 rounded-lg">
               <h3 className="text-sm font-medium text-cyan-800 mb-2">Kalibrasyon Bilgileri</h3>
@@ -863,7 +863,7 @@ const Dashboard = () => {
         </div>
 
         {/* Sıvı Seviye Sensörleri 3D Görselleştirme */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Sıvı Seviye Sensörleri (3D)</h2>
           
 
@@ -873,10 +873,10 @@ const Dashboard = () => {
 
         {/* Sıvı Seviye Veri Tablosu */}
         {telemetryData.liquid_levels && telemetryData.liquid_levels.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Sıvı Seviye Verileri</h2>
             
-            <div className="grid grid-cols-8 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 sm:gap-4">
               {telemetryData.liquid_levels.map((level, index) => (
                 <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
                   <div className="text-sm font-medium text-gray-600 mb-2">Sensör {index + 1}</div>
@@ -898,21 +898,23 @@ const Dashboard = () => {
             </div>
             
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <div className="text-sm text-blue-800">
-                <strong>Toplam Sensör:</strong> {telemetryData.liquid_levels.length} | 
-                <strong>Ortalama Seviye:</strong> {(telemetryData.liquid_levels.reduce((a, b) => a + b, 0) / telemetryData.liquid_levels.length).toFixed(1)} | 
-                <strong>Maksimum Seviye:</strong> {Math.max(...telemetryData.liquid_levels)} | 
-                <strong>Minimum Seviye:</strong> {Math.min(...telemetryData.liquid_levels)}
+              <div className="text-xs sm:text-sm text-blue-800 flex flex-wrap gap-x-3 gap-y-1">
+                <span><strong>Toplam Sensör:</strong> {telemetryData.liquid_levels.length}</span>
+                <span>|</span>
+                <span><strong>Ortalama Seviye:</strong> {(telemetryData.liquid_levels.reduce((a, b) => a + b, 0) / telemetryData.liquid_levels.length).toFixed(1)}</span>
+                <span>|</span>
+                <span><strong>Maksimum Seviye:</strong> {Math.max(...telemetryData.liquid_levels)}</span>
+                <span>|</span>
+                <span><strong>Minimum Seviye:</strong> {Math.min(...telemetryData.liquid_levels)}</span>
               </div>
             </div>
           </div>
         )}
 
         {/* Log Panel */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Sistem Logları</h2>
-          
-          <div className="bg-gray-900 text-green-400 p-4 rounded-lg h-64 overflow-y-auto font-mono text-sm">
+          <div className="bg-gray-900 text-green-400 p-2 sm:p-4 rounded-lg h-48 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm">
             {logs.length === 0 ? (
               <p className="text-gray-500">Henüz log mesajı yok...</p>
             ) : (
