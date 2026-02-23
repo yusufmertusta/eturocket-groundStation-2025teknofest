@@ -209,12 +209,17 @@ const LiquidLevel3D = ({ liquidData }) => {
     renderer.domElement.addEventListener('mousemove', onMouseMove);
 
     // Touch support for mobile/tablet
-    const onTouchStart = (e) => { e.preventDefault(); onMouseDown(e.touches[0]); };
+    const onTouchStart = (e) => {
+      e.preventDefault();
+      if (e.touches && e.touches.length > 0) onMouseDown(e.touches[0]);
+    };
     const onTouchEnd = () => { onMouseUp(); };
-    const onTouchMove = (e) => { e.preventDefault(); onMouseMove(e.touches[0]); };
+    const onTouchMove = (e) => {
+      if (e.touches && e.touches.length > 0) onMouseMove(e.touches[0]);
+    };
     renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
     renderer.domElement.addEventListener('touchend', onTouchEnd);
-    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
+    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: true });
 
     // Responsive resize handler
     const handleResize = () => {
@@ -226,8 +231,13 @@ const LiquidLevel3D = ({ liquidData }) => {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     };
-    const resizeObserver = new ResizeObserver(handleResize);
-    resizeObserver.observe(mountRef.current);
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(mountRef.current);
+    } else {
+      window.addEventListener('resize', handleResize);
+    }
     
     // Animation loop
     const animate = () => {
@@ -249,7 +259,11 @@ const LiquidLevel3D = ({ liquidData }) => {
     
     // Cleanup
     return () => {
-      resizeObserver.disconnect();
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      } else {
+        window.removeEventListener('resize', handleResize);
+      }
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }

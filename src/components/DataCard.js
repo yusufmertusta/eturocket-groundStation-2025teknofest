@@ -49,7 +49,7 @@ const DataCard = ({ title, value, unit = '', type = 'number', icon: Icon, status
       </div>
       
       <div className="flex items-baseline space-x-1">
-        <span className="text-xl sm:text-3xl font-bold break-all">
+        <span className="text-xl sm:text-3xl font-bold break-words">
           {formatValue()}
         </span>
         {unit && (
