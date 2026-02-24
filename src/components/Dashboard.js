@@ -348,7 +348,7 @@ const Dashboard = () => {
         )}
 
         {/* Configuration Panel */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="sistem-ayarları" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center space-x-2 mb-4">
             <Settings className="h-5 w-5 text-gray-600" />
             <h2 className="text-lg font-semibold text-gray-900">Sistem Ayarları</h2>
@@ -496,7 +496,7 @@ const Dashboard = () => {
         </div>
 
         {/* Telemetry Display */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="telemetri-verileri" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Telemetri Verileri</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -671,8 +671,9 @@ const Dashboard = () => {
         </div>
 
         {/* GPS Data Comparison */}
-        {telemetryData.gps_valid && (telemetryData.payload_latitude !== 0 || telemetryData.payload_longitude !== 0 || telemetryData.payload_gps_altitude !== 0) && (
-          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="gps-veri-karsilastirma" className="scroll-mt-24">
+          {telemetryData.gps_valid && (telemetryData.payload_latitude !== 0 || telemetryData.payload_longitude !== 0 || telemetryData.payload_gps_altitude !== 0) && (
+            <div className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">GPS Veri Karşılaştırması</h2>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -705,9 +706,10 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+        </div>
 
         {/* Google Maps Harita */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="gps-konum-haritasi" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">GPS Konum Haritası</h2>
           <GoogleMap
             rocketLat={telemetryData.gps_latitude}
@@ -722,7 +724,7 @@ const Dashboard = () => {
         </div>
 
         {/* Paraşüt Durum Özeti */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="parasut-durum-ozeti" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Paraşüt Durum Özeti</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -773,7 +775,7 @@ const Dashboard = () => {
         </div>
 
         {/* Data Source Status */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="veri-kaynak-durumu" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Veri Kaynak Durumu</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
@@ -820,9 +822,10 @@ const Dashboard = () => {
         </div>
 
         {/* 3D Modeller */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Roket 3D Modeli */}
-          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="3d-modeller" className="scroll-mt-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Roket 3D Modeli */}
+            <div id="roket-3d-modeli" className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Roket 3D Modeli</h2>
             <div className="mb-4 p-3 bg-blue-50 rounded-lg">
               <h3 className="text-sm font-medium text-blue-800 mb-2">Kalibrasyon Bilgileri</h3>
@@ -841,8 +844,8 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* Payload 3D Modeli */}
-          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+            {/* Payload 3D Modeli */}
+            <div id="payload-3d-modeli" className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Payload 3D Modeli</h2>
             <div className="mb-4 p-3 bg-cyan-50 rounded-lg">
               <h3 className="text-sm font-medium text-cyan-800 mb-2">Kalibrasyon Bilgileri</h3>
@@ -861,9 +864,10 @@ const Dashboard = () => {
             />
           </div>
         </div>
+        </div>
 
         {/* Sıvı Seviye Sensörleri 3D Görselleştirme */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="sivi-seviye-3d" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Sıvı Seviye Sensörleri (3D)</h2>
           
 
@@ -873,7 +877,7 @@ const Dashboard = () => {
 
         {/* Sıvı Seviye Veri Tablosu */}
         {telemetryData.liquid_levels && telemetryData.liquid_levels.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div id="sivi-seviye-verileri" className="bg-white rounded-lg shadow p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Sıvı Seviye Verileri</h2>
             
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 sm:gap-4">
@@ -912,7 +916,7 @@ const Dashboard = () => {
         )}
 
         {/* Log Panel */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div id="sistem-loglari" className="scroll-mt-24 bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Sistem Logları</h2>
           <div className="bg-gray-900 text-green-400 p-2 sm:p-4 rounded-lg h-48 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm">
             {logs.length === 0 ? (
@@ -927,9 +931,11 @@ const Dashboard = () => {
             )}
           </div>
         </div>
+      {/*main content wrapper kapat */}
       </div>
+    {/*min-h-screen wrapper kapat */}
     </div>
   );
-};
+}
 
 export default Dashboard;
