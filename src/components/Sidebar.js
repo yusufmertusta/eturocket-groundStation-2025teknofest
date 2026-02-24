@@ -21,14 +21,26 @@ const sidebarItems = [
   { label: "Sistem Logları", id: "sistem-loglari", icon: <FileText size={18} /> },
 ];
 
-const Sidebar = ({ onNavigate, activeId }) => {
+const Sidebar = ({ onNavigate, activeId, open, onClose }) => {
   const [open3D, setOpen3D] = useState(true);
 
+  // degault: sidebar kapalı, open = true -_> sidebar açık
+  const sidebarClass = `h-screen w-64 bg-white border-r shadow-sm fixed top-0 left-0 z-40 flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'}`;
+
   return (
-    <aside className="h-screen w-64 bg-white border-r shadow-sm fixed top-0 left-0 z-30 flex flex-col">
+    <aside className={sidebarClass}>
       <div className="px-6 py-4 border-b flex items-center font-bold text-lg text-blue-700 tracking-wide">
         Ground Station
-        Navigation Menu
+        Navigation Bar
+        <button
+          className="ml-auto text-gray-500 hover:text-gray-800 p-1"
+          onClick={onClose}
+          aria-label="Menüyü Kapat"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
       <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1">
