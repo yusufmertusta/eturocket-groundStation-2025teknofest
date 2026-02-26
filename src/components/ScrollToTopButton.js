@@ -11,8 +11,24 @@ const ScrollToTopButton = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Custom ease-out scroll animation
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const start = window.scrollY;
+    const duration = 600; // ms
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+    let startTime = null;
+
+    function animateScroll(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutCubic(progress);
+      window.scrollTo(0, start * (1 - eased));
+      if (progress < 1) {
+        window.requestAnimationFrame(animateScroll);
+      }
+    }
+    window.requestAnimationFrame(animateScroll);
   };
 
   if (!visible) return null;
