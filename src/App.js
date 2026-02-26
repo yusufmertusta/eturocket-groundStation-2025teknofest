@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
-import './App.css';
+import Dashboard from './components/Dashboard';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 
 function App() {
@@ -48,6 +48,7 @@ function App() {
       )}
       <main className="flex-1 bg-gray-50 min-h-screen">
         <Dashboard activeSection={activeSection} />
+        <ScrollToTopButton />
       </main>
     </div>
   );
