@@ -1,13 +1,15 @@
+
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
+// Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
+const CALIBRATION_OFFSETS = {
+  roll: 92.2,   // Referans Roll değeri
+  pitch: 0.3,   // Referans Pitch değeri
+  yaw: -74.0    // Referans Yaw değeri
+};
+
 const Payload3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
-  // Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
-  const CALIBRATION_OFFSETS = {
-    roll: 92.2,   // Referans Roll değeri
-    pitch: 0.3,   // Referans Pitch değeri
-    yaw: -74.0    // Referans Yaw değeri
-  };
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);

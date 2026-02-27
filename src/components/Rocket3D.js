@@ -1,13 +1,15 @@
+
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
+// Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
+const CALIBRATION_OFFSETS = {
+  gyroX: 83.7,  // Referans Gyro X değeri
+  gyroY: 3.4,   // Referans Gyro Y değeri  
+  gyroZ: 111.1  // Referans Gyro Z değeri
+};
+
 const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
-  // Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
-  const CALIBRATION_OFFSETS = {
-    gyroX: 83.7,  // Referans Gyro X değeri
-    gyroY: 3.4,   // Referans Gyro Y değeri  
-    gyroZ: 111.1  // Referans Gyro Z değeri
-  };
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
