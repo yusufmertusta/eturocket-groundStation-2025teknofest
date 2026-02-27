@@ -4,6 +4,21 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ScrollToTopButton from './components/ScrollToTopButton';
 
+// Section IDs in order (should match Sidebar and Dashboard)
+const sectionIds = [
+  'sistem-ayarları',
+  'telemetri-verileri',
+  'gps-konum-haritasi',
+  'parasut-durum-ozeti',
+  'veri-kaynak-durumu',
+  '3d-modeller',
+  'roket-3d-modeli',
+  'payload-3d-modeli',
+  'sivi-seviye-3d',
+  'sivi-seviye-verileri',
+  'sistem-loglari',
+];
+
 
 function App() {
 
@@ -12,20 +27,6 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isAutoScrolling = useRef(false);
 
-  // Section IDs in order (should match Sidebar and Dashboard)
-  const sectionIds = [
-    'sistem-ayarları',
-    'telemetri-verileri',
-    'gps-konum-haritasi',
-    'parasut-durum-ozeti',
-    'veri-kaynak-durumu',
-    '3d-modeller',
-    'roket-3d-modeli',
-    'payload-3d-modeli',
-    'sivi-seviye-3d',
-    'sivi-seviye-verileri',
-    'sistem-loglari',
-  ];
 
   // Scroll mekaniği
   // Custom ease-out animasyonu olacak şekilde güncellendi
@@ -79,7 +80,6 @@ function App() {
         const rect = el.getBoundingClientRect();
         return { id, top: rect.top - 24, bottom: rect.bottom - 24 };
       }).filter(Boolean);
-
       // Find all sections whose top is within the viewport (e.g., above 80px from top)
       const visibleSections = sectionTops.filter(s => s.top <= 80 && s.bottom > 40);
 
@@ -112,7 +112,7 @@ function App() {
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [sectionIds]);
+  }, []);
 
   return (
     <div className="flex">
