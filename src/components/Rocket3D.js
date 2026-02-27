@@ -1,19 +1,21 @@
-import React, { useRef, useEffect, useState } from 'react';
+
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
+// Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
+const CALIBRATION_OFFSETS = {
+  gyroX: 83.7,  // Referans Gyro X değeri
+  gyroY: 3.4,   // Referans Gyro Y değeri  
+  gyroZ: 111.1  // Referans Gyro Z değeri
+};
+
 const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
-  // Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
-  const CALIBRATION_OFFSETS = {
-    gyroX: 83.7,  // Referans Gyro X değeri
-    gyroY: 3.4,   // Referans Gyro Y değeri  
-    gyroZ: 111.1  // Referans Gyro Z değeri
-  };
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const cameraRef = useRef(null);
   const rocketRef = useRef(null);
-  const controlsRef = useRef(null);
+  // const controlsRef = useRef(null); // removed unused
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -23,13 +25,16 @@ const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
     scene.background = new THREE.Color(0xf0f0f0);
     
     // Camera setup
-    const camera = new THREE.PerspectiveCamera(50, 400 / 300, 0.1, 1000);
+    const initWidth = mountRef.current.clientWidth || 400;
+    const initHeight = mountRef.current.clientHeight || 300;
+    const camera = new THREE.PerspectiveCamera(50, initWidth / initHeight, 0.1, 1000);
     camera.position.set(0, 5, 10);
     camera.lookAt(0, 0, 0);
     
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(400, 300);
+    renderer.setSize(initWidth, initHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
@@ -155,6 +160,37 @@ const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
     renderer.domElement.addEventListener('mousedown', onMouseDown);
     renderer.domElement.addEventListener('mouseup', onMouseUp);
     renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+    // Touch support for mobile/tablet
+    const onTouchStart = (e) => {
+      e.preventDefault();
+      if (e.touches && e.touches.length > 0) onMouseDown(e.touches[0]);
+    };
+    const onTouchEnd = () => { onMouseUp(); };
+    const onTouchMove = (e) => {
+      if (e.touches && e.touches.length > 0) onMouseMove(e.touches[0]);
+    };
+    renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
+    renderer.domElement.addEventListener('touchend', onTouchEnd);
+    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: true });
+
+    // Responsive resize handler
+    const handleResize = () => {
+      if (!mountRef.current) return;
+      const w = mountRef.current.clientWidth;
+      const h = mountRef.current.clientHeight;
+      if (w === 0 || h === 0) return;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(mountRef.current);
+    } else {
+      window.addEventListener('resize', handleResize);
+    }
     
     // Animation loop
     const animate = () => {
@@ -164,13 +200,22 @@ const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
     animate();
     
     // Cleanup
+    const mountNode = mountRef.current;
     return () => {
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      } else {
+        window.removeEventListener('resize', handleResize);
+      }
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
+      renderer.domElement.removeEventListener('touchstart', onTouchStart);
+      renderer.domElement.removeEventListener('touchend', onTouchEnd);
+      renderer.domElement.removeEventListener('touchmove', onTouchMove);
       renderer.dispose();
     };
   }, []);
@@ -237,7 +282,7 @@ const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
         </p>
       </div>
       
-      <div ref={mountRef} className="w-full h-full border border-gray-300 rounded-lg bg-gray-50" />
+      <div ref={mountRef} className="w-full h-[240px] sm:h-[300px] lg:h-[380px] border border-gray-300 rounded-lg bg-gray-50" />
       
       {/* Gyro data visualization */}
       <div className="mt-4 p-4 bg-gray-100 rounded-lg">
