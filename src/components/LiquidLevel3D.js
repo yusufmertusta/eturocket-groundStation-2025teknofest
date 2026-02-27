@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
 const LiquidLevel3D = ({ liquidData }) => {
@@ -7,7 +7,7 @@ const LiquidLevel3D = ({ liquidData }) => {
   const rendererRef = useRef(null);
   const cameraRef = useRef(null);
   const rodsRef = useRef([]);
-  const controlsRef = useRef(null);
+  // const controlsRef = useRef(null); // removed unused
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -99,7 +99,7 @@ const LiquidLevel3D = ({ liquidData }) => {
         // Her çubuk için 8 bit segment oluştur
         const rodSegments = [];
         const segmentHeight = 0.4; // Her bit segment'inin yüksekliği
-        const totalRodHeight = 8 * segmentHeight; // Toplam çubuk yüksekliği
+        // const totalRodHeight = 8 * segmentHeight; // removed unused
         
         for (let bit = 0; bit < 8; bit++) {
           const segmentGeometry = new THREE.CylinderGeometry(0.25, 0.25, segmentHeight, 12);
@@ -147,8 +147,8 @@ const LiquidLevel3D = ({ liquidData }) => {
     let rotationSpeed = 0.0005;
     
     // Mouse controls
-    let mouseX = 0;
-    let mouseY = 0;
+    // let mouseX = 0;
+    // let mouseY = 0;
     let isMouseDown = false;
     let lastMouseX = 0;
     let lastMouseY = 0;
@@ -258,14 +258,15 @@ const LiquidLevel3D = ({ liquidData }) => {
     animate();
     
     // Cleanup
+    const mountNode = mountRef.current;
     return () => {
       if (resizeObserver) {
         resizeObserver.disconnect();
       } else {
         window.removeEventListener('resize', handleResize);
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);

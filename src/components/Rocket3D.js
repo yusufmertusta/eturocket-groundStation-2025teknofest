@@ -1,19 +1,21 @@
-import React, { useRef, useEffect, useState } from 'react';
+
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
+// Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
+const CALIBRATION_OFFSETS = {
+  gyroX: 83.7,  // Referans Gyro X değeri
+  gyroY: 3.4,   // Referans Gyro Y değeri  
+  gyroZ: 111.1  // Referans Gyro Z değeri
+};
+
 const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
-  // Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
-  const CALIBRATION_OFFSETS = {
-    gyroX: 83.7,  // Referans Gyro X değeri
-    gyroY: 3.4,   // Referans Gyro Y değeri  
-    gyroZ: 111.1  // Referans Gyro Z değeri
-  };
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const cameraRef = useRef(null);
   const rocketRef = useRef(null);
-  const controlsRef = useRef(null);
+  // const controlsRef = useRef(null); // removed unused
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -198,14 +200,15 @@ const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
     animate();
     
     // Cleanup
+    const mountNode = mountRef.current;
     return () => {
       if (resizeObserver) {
         resizeObserver.disconnect();
       } else {
         window.removeEventListener('resize', handleResize);
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);

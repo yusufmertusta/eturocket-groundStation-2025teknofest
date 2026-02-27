@@ -62,7 +62,7 @@ const Sidebar = ({ onNavigate, activeId, open, onClose }) => {
                     {item.children.map((child) => (
                       <li key={child.id}>
                         <button
-                          className={`w-full flex items-center px-3 py-2 text-gray-600 hover:bg-blue-100 rounded transition ${activeId === child.id ? "bg-blue-100 font-bold text-blue-700" : ""}`}
+                          className={`w-full flex items-center px-3 py-2 text-gray-600 hover:bg-blue-100 rounded transition ${Array.isArray(activeId) ? (activeId.includes(child.id) ? "bg-blue-100 font-bold text-blue-700" : "") : (activeId === child.id ? "bg-blue-100 font-bold text-blue-700" : "")}`}
                           onClick={() => onNavigate(child.id)}
                         >
                           <span className="mr-2">{child.icon}</span>
@@ -76,7 +76,7 @@ const Sidebar = ({ onNavigate, activeId, open, onClose }) => {
             ) : (
               <li key={item.id}>
                 <button
-                  className={`w-full flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition ${activeId === item.id ? "bg-blue-100 font-bold text-blue-700" : ""}`}
+                  className={`w-full flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 rounded transition ${Array.isArray(activeId) ? (activeId.includes(item.id) ? "bg-blue-100 font-bold text-blue-700" : "") : (activeId === item.id ? "bg-blue-100 font-bold text-blue-700" : "")}`}
                   onClick={() => onNavigate(item.id)}
                 >
                   <span className="mr-2">{item.icon}</span>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
-import { MapPin, Navigation, Satellite } from 'lucide-react';
+import { MapPin, Navigation } from 'lucide-react';
 
 const MapComponent = ({ 
   rocketLat, 

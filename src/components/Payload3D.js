@@ -1,19 +1,21 @@
-import React, { useRef, useEffect, useState } from 'react';
+
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
+// Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
+const CALIBRATION_OFFSETS = {
+  roll: 92.2,   // Referans Roll değeri
+  pitch: 0.3,   // Referans Pitch değeri
+  yaw: -74.0    // Referans Yaw değeri
+};
+
 const Payload3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
-  // Kalibrasyon değerleri - yüzeye dik ve yukarı bakan hal için referans
-  const CALIBRATION_OFFSETS = {
-    roll: 92.2,   // Referans Roll değeri
-    pitch: 0.3,   // Referans Pitch değeri
-    yaw: -74.0    // Referans Yaw değeri
-  };
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const cameraRef = useRef(null);
   const payloadRef = useRef(null);
-  const controlsRef = useRef(null);
+  // const controlsRef = useRef(null); // removed unused
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -212,14 +214,15 @@ const Payload3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
     animate();
     
     // Cleanup
+    const mountNode = mountRef.current;
     return () => {
       if (resizeObserver) {
         resizeObserver.disconnect();
       } else {
         window.removeEventListener('resize', handleResize);
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
