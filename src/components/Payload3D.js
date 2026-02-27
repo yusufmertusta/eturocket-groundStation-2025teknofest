@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
 const Payload3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
@@ -13,7 +13,7 @@ const Payload3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
   const rendererRef = useRef(null);
   const cameraRef = useRef(null);
   const payloadRef = useRef(null);
-  const controlsRef = useRef(null);
+  // const controlsRef = useRef(null); // removed unused
 
   useEffect(() => {
     if (!mountRef.current) return;
