@@ -198,15 +198,15 @@ const Rocket3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
     animate();
     
     // Cleanup
+    const mountNode = mountRef.current;
     return () => {
       if (resizeObserver) {
         resizeObserver.disconnect();
       } else {
         window.removeEventListener('resize', handleResize);
       }
-        const mountNode = mountRef.current;
-        if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
-          mountNode.removeChild(renderer.domElement);
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
