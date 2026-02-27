@@ -63,6 +63,14 @@ function App() {
   useEffect(() => {
     function onScroll() {
       if (isAutoScrolling.current) return;
+      // If scrolled to (or near) bottom, highlight last section
+      const scrollY = window.scrollY || window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      if (scrollY + windowHeight >= docHeight - 2) {
+        setActiveSection(sectionIds[sectionIds.length - 1]);
+        return;
+      }
       // Find the section closest to the top
       let closestId = sectionIds[0];
       let minDist = Infinity;
