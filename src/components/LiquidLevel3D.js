@@ -258,14 +258,15 @@ const LiquidLevel3D = ({ liquidData }) => {
     animate();
     
     // Cleanup
+    const mountNode = mountRef.current;
     return () => {
       if (resizeObserver) {
         resizeObserver.disconnect();
       } else {
         window.removeEventListener('resize', handleResize);
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);

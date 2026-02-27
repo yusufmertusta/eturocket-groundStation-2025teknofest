@@ -218,8 +218,9 @@ const Payload3D = ({ gyroX, gyroY, gyroZ, altitude, isConnected }) => {
       } else {
         window.removeEventListener('resize', handleResize);
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      const mountNode = mountRef.current;
+      if (mountNode && renderer && renderer.domElement && mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
